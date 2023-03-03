@@ -8,6 +8,7 @@ export const AutoComplete = () => {
     const [allKits, setKits] = useState([]);
     const [allIDs, setIDs] = useState([]);
     const [selectedKitId, setSelectedKit] = useState("")
+    const [typedKitId, setTypedKitId] = useState("")
     const [foundKits, setFoundKits] = useState([])
 
     useEffect(() => {
@@ -26,16 +27,13 @@ export const AutoComplete = () => {
     const handleSubmit = e => {
         e.preventDefault()
         let results = []
+        const longerId = selectedKitId.length > typedKitId.length ? selectedKitId : typedKitId
         allKits.forEach(kit => {
-            if (kit.label_id.startsWith(selectedKitId)){
+            if (kit.label_id.startsWith(longerId)){
                 results.push(kit)
             }
         })
         setFoundKits(results)
-    };
-
-    const handleChange = async(event) => {
-        await setSelectedKit(event.target.value);
     };
 
     return (
@@ -44,11 +42,19 @@ export const AutoComplete = () => {
                 <label>
                     Search by label id number:
                     <Autocomplete
+                        value={typedKitId}
+                        inputValue={selectedKitId}
+                        onChange={(event, newValue) => {
+                            setTypedKitId(newValue);
+                          }}
+                        onInputChange={(event, newValue) => {
+                            setSelectedKit(newValue);
+                          }}
                         disablePortal
                         id="combo-box-demo"
                         options={allIDs}
                         sx={{ width: 300 }}
-                        renderInput={(params) => <TextField {...params} label="Kit ID" value={selectedKitId} onChange={handleChange}/>}
+                        renderInput={(params) => <TextField {...params} label="Kit ID"/>}
                     />
                 </label>
                 <input type="submit" value="Submit"/>
