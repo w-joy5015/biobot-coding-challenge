@@ -1,70 +1,49 @@
-# Getting Started with Create React App
+# Biobot Kit Finder App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a React app that allows a user to look up a Biobot kit by it label ID number.
+It is built using the Create React App framework on the frontend and an Express server on the backend.
 
-## Available Scripts
 
-In the project directory, you can run:
+## How to use
+1. *Install packages*: `npm install`
 
-### `npm start`
+2. *Start the backend server*: `node express-server/index.js`
+The console should show `Listening on port 5000` when the server is running.
+- The server has one API endpoint, a GET request that returns a list of all kits:
+GET `http://localhost:5000/` (no headers required)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+3. *Start the frontend server*: `npm start`
+The frontend React app is served at `http://localhost:3000`
+- The frontend has a text field where a user can start typing a label ID. This text field
+autocompletes with label IDs from the set of label IDs in `KITS_SHIPPING_DATA.json`. 
+- Upon entering or selecting a label ID and hitting "Submit", a list of kits is displayed with
+their corresponding shipping tracking number.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
+## Engineering decisions
+- On initial load of the React app, an API request is made to GET a list of all the kits.
+This was done so only one API request would have to be made to the backend while all the
+search and autocomplete logic would be handled on the frontend. At larger scale, this could
+make the initial load slower, but the alternative (making an API call for each new search) could
+create more traffic on the backend when there are a large number of users.
+- The autocomplete component was built using the imported material-UI Autocomplete component[https://mui.com/material-ui/react-autocomplete/].
+Leveraging this library was a fast way to build the autocomplete feature. The drawback is that
+some extra work is needed to make the styling consistent, which I mention in the Additional Work below.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+## Additional Work TODO:
+With more time, I would make the following improvements:
+1. Make the app more readable and accessible. Currently, the autocomplete text field has poor
+contrast against the dark background which makes for poor accessibility
+standards. 
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2. Improve the styling to make it more visually appealing. It would look nicer to have the 
+label ID and tracking number appear as a card component instead of an unordered list. 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3. Since the app was made using the Create React App template the styling currently reflects
+React's brand (with the logo, favicon, and color scheme), but it should be standardized to use Biobot's if this were to be a Biobot app.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+2. Add unit testing. There's currently an App.test.js file that came with the templete Create
+React App, but it hasn't been updated with the changes I have made to App.js. I would have liked
+to make unit tests for each of the components I created as well as the GET request I made in
+express-server.
