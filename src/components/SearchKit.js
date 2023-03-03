@@ -1,6 +1,5 @@
 import React from "react";
 import { Api } from "../api.js";
-// import { KitInfo } from "./KitInfo.js";
 
 export class SearchKit extends React.Component {
     constructor(props) {
@@ -8,7 +7,6 @@ export class SearchKit extends React.Component {
         this.state = {value: '', foundKits:[]};
     
         this.handleChange = this.handleChange.bind(this);
-        // this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleChange = async(event) => {
         await this.setState({value: event.target.value});

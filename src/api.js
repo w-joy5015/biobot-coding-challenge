@@ -1,9 +1,7 @@
-const getKitsByIdNumber = async (IdNumber) => {
+const getKits = async () => {
     const response = await fetch('http://localhost:5000/', {
             method: "GET",
-            headers: {
-                "idnumber": IdNumber
-            }
+            headers: {}
         }
     )
     if (response.ok) {
@@ -15,5 +13,5 @@ const getKitsByIdNumber = async (IdNumber) => {
 }
 
 export const Api = {
-    getKitsByIdNumber,
+    getKits,
 };

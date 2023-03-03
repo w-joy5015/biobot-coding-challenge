@@ -2,8 +2,9 @@ import express from "express"
 // const express = require("express");
 import bodyParser from "body-parser"
 // const bodyParser = require("body-parser")
-// const { search } = require("../utils.js");
-import search from "../utils.js"
+// import search from "../utils.js"
+
+import fs from "fs";
 
 const jsonParser = bodyParser.json()
 const  urlencodedParser = bodyParser.urlencoded({ extended: false })
@@ -18,9 +19,15 @@ app.use(function(req, res, next) {
 
 app.get("/", urlencodedParser, (request, response) => {
     const searchStr = request.headers["idnumber"]
-    const kitsArr = search(searchStr)
-    if (kitsArr){
-        response.send(kitsArr);
+    // const kitsArr = search(searchStr)
+    // if (kitsArr){
+    //     response.send(kitsArr);
+    // } else {
+    //     response.send([])
+    // }
+    const data = JSON.parse(fs.readFileSync("KITS_SHIPPING_DATA.json"))
+    if (data){
+        response.send(data);
     } else {
         response.send([])
     }
